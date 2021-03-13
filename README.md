@@ -18,3 +18,9 @@ We will use Flask for backend.
 * Jainil Shah [LinkedIn](https://www.linkedin.com/in/jainilkumar-shah-0aa75b169/),   [Github](https://github.com/jainil-4801), [Resume](https://drive.google.com/file/d/1jZse9llxBDOqNqOKeKuVn2vobHs-LYv5/view?usp=sharing&authuser=1)
 * Abhinav Gupta [LinkedIn](https://www.linkedin.com/in/abhinav-gupta-933825180/),   [Github](https://github.com/Abhinav1299), [Resume](https://drive.google.com/file/d/1nERlEjj9mbTIogQn7jutbf9rErhgLz3z/view?usp=sharing)
 * Adit Alware [LinkedIn](https://www.linkedin.com/in/adit-alware-756652176/),   [Github](https://github.com/aditalware), [Resume](https://drive.google.com/file/d/1mu3hRqfxlkjiFHbX7DNu_u7vcAmBp__6/view?usp=sharing&authuser=1)
+
+
+
+## Snapshots of our prototype
+
+<img src="prototype/prototype1.jpeg" width="150" height="300">&emsp;  &emsp; <img src="prototype/prototype2.jpeg" width="150" height="300"> &emsp;  &emsp; <img src="prototype/prototype3.jpeg" width="150" height="300">&emsp;  &emsp; <img src="prototype/prototype4.jpeg" width="150" height="300">&emsp;  &emsp; <img src="prototype/prototype5.jpeg" width="150" height="300">
