@@ -44,6 +44,26 @@ const GetRequestApi = async(url,data) => {
     }
 };
 
+const PostRequestApi = async(url,img) => {
+    let timeout =10000 ;
+    let response ={
+        data:{},
+        err:null
+    }
+    try {
+        let resp = await Axios.post(url,img, {headers: getHeaders(),timeout:100000});
+       
+        if(resp.data ){
+            return resp.data;
+        }
+    }catch(error) {
+        let resp = error;
+        // throw error ;
+        response.err=resp;
+        return response
+    }
+};
+
 
 const getHeaders =() =>{
     let headers =
@@ -72,13 +92,14 @@ const getHeaders =() =>{
 // };
 
 
-function capture1() {
-    var canvas = document.getElementById('canvas');
-    var video = document.getElementById('video');
+async function capture1() {
+    var canvas = await document.getElementById('canvas');
+    var video = await document.getElementById('video');
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);  
     var img1 = canvas.toDataURL();
+    
     // $.ajax({
     //             url: '/process1',
     //             data: {
@@ -93,6 +114,18 @@ function capture1() {
     //                 conv.sendMessage(data);
     //             } 
     //         })
+
+
+    let url="https://fb5de64b845c.ngrok.io/process_image";
+    let dataTosend=JSON.stringify({img:img1});
+    PostRequestApi(url,dataTosend).then(data => {
+        console.log(data);
+        conv.sendMessage(data.ans);
+        
+    }).catch(e => {
+        console.log(e);
+        
+    });
 
     // conv.sendMessage("https://i.pinimg.com/originals/83/f9/37/83f937b69f30bb886ab8a03390da6771.jpg");
 };
@@ -165,7 +198,7 @@ async function connectButtonHandler(event) {
 };
 
 async function connect(username) {
-    let url="https://43407638a13d.ngrok.io/login";
+    let url="https://fb5de64b845c.ngrok.io/login";
    
     const usernameInput =await document.getElementById('username');
     const localDiv =await document.getElementById('local');
@@ -203,21 +236,22 @@ async function connect(username) {
 
 
 async function attachTracks(tracks) {
-    const container =await document.getElementById('container');
+    const container =await document.getElementById('myVideo');
 
   tracks.forEach(function(track) {
     if (track) {
+          let d = document.getElementById("myVideo");
+      console.log(d.childNodes);
+      try{
+        d.removeChild(d.childNodes[0]);
+      }catch(e){
+         console.log(e);
+      }
       let v = track.attach();
       v.setAttribute('id','video');
       console.log(v);
       container.appendChild(v);
-      let d = document.getElementById("myVideo");
-      console.log(d.childNodes);
-      try{
-        d.removeChild(d.childNodes[1]);
-      }catch(e){
-         console.log(e);
-      }
+    
     }
   });
   // console.log("Hrll");
@@ -257,7 +291,7 @@ async function gotDevices(mediaDevices) {
 //                Select Camera
 //                 </option>`;
   
-  let count = 1;
+  let count = 0;
   mediaDevices.forEach(mediaDevice => {
     if (mediaDevice.kind === 'videoinput') {
       const option = document.createElement('option');
@@ -344,8 +378,9 @@ else {
     updateParticipantCount();
 };
 
-function participantDisconnected(participant) {
-    document.getElementById(participant.sid).remove();
+async function participantDisconnected(participant) {
+  let a= await document.getElementById(participant.sid);
+  a.remove();
     updateParticipantCount();
 };
 
@@ -410,6 +445,300 @@ async function shareScreenHandler() {
     }
 };
 
+async function zoomTrack(trackElement) {
+    const container =await document.getElementById('container');
+
+
+
+    if (!trackElement.classList.contains('trackZoomed')) {
+        // zoom in
+        container.childNodes.forEach(participant => {
+            if (participant.classList && participant.classList.contains('participant')) {
+                let zoomed = false;
+                participant.childNodes[0].childNodes.forEach(track => {
+                    if (track === trackElement) {
+                        track.classList.add('trackZoomed')
+                        zoomed = true;
+                    }
+                });
+                if (zoomed) {
+                    participant.classList.add('participantZoomed');
+                }
+                else {
+                    participant.classList.add('participantHidden');
+                }
+            }
+        });
+    }
+    else {
+        // zoom out
+        container.childNodes.forEach(participant => {
+            if (participant.classList && participant.classList.contains('participant')) {
+                participant.childNodes[0].childNodes.forEach(track => {
+                    if (track === trackElement) {
+                        track.classList.remove('trackZoomed');
+                    }
+                });
+                participant.classList.remove('participantZoomed')
+                participant.classList.remove('participantHidden')
+            }
+        });
+    }
+};
+
+ async function connectChat(token, conversationSid) {
+    const chatContent =await document.getElementById('chat-content');
+    const toggleChat = await document.getElementById('toggle_chat');
+    const usernameInput = await document.getElementById('username');
+    return ConversationsClient.create(token).then(_chat => {//change
+        chat = _chat;
+        return chat.getConversationBySid(conversationSid).then((_conv) => {
+            conv = _conv;
+            conv.on('messageAdded', async(message) => {
+                const val = await parseURL(message.author, message.body);
+                if(val == 0)
+                    addMessageToChat(message.author, message.body);
+            });
+            return conv.getMessages().then((messages) => {
+                chatContent.innerHTML = '';
+                console.log(messages.items.map((m)=>m.body));
+                if(usernameInput.value == mentor){
+                    conv.sendMessage('Mentor joined '+mentor);
+                    
+                }
+                // alert("Let See");
+                // for (let i = 0; i < messages.items.length; i++) {
+                //     addMessageToChat(messages.items[i].author, messages.items[i].body);
+                // }
+                toggleChat.disabled = false;
+            });
+        });
+    }).catch(e => {
+        console.log(e);
+    });
+};
+
+async function addMessageToChat(user, message) {
+    const chatContent = await document.getElementById('chat-content');
+    const chatScroll = await document.getElementById('chat-scroll');
+
+
+    chatContent.innerHTML += `<p><b>${user}</b>: ${message}`;
+    chatScroll.scrollTop = chatScroll.scrollHeight;
+}
+
+async function toggleChatHandler() {
+    const chatScroll = await document.getElementById('chat-scroll');
+    const root = await document.getElementById('root');
+
+    // event.preventDefault();
+    if (root.classList.contains('withChat')) {
+        root.classList.remove('withChat');
+    }
+    else {
+        root.classList.add('withChat');
+        chatScroll.scrollTop = chatScroll.scrollHeight;
+    }
+};
+
+async function onChatInputKey(ev) {
+    console.log('chat');
+    // console.log(ev);
+
+    const chatInput = await document.getElementById('chat-input');
+    // console.log(chatInput.value);
+    const usernameInput = await document.getElementById('username');
+
+
+    if (ev.keyCode == 13) {//enter
+        console.log('enter pressed')
+        // console.log(conv);
+        // console.log(conv.sendMessage(chatInput.value));
+        conv.sendMessage(chatInput.value);
+        // conv.emit('messageAdded',{author:usernameInput.value,body:chatInput.value});
+        chatInput.value = '';
+    }
+};
+
+
+// document.getElementById("Turn").onClick = function() {
+//     conv.sendMessage("accept " + usernameInput.value);
+// }
+
+// document.getElementById("Allow").onClick = function() {
+//     if(mentor == usernameInput.value){
+//         conv.sendMessage("Access Allowed to "+recent_message);
+//     }
+// }
+
+// document.getElementById("turn_over").onClick = function() {
+//     conv.sendMessage("Access Granted to "+mentor);
+// }
+
+// document.getElementById("cls").onClick = function() {
+//     conv.sendMessage("clear screen");
+//     images.innerHTML = "";
+// }
+
+async function parseURL(author, message) {
+    const images = await document.getElementById('imageDiv');
+
+    if(message.startsWith("https")){
+        // document.getElementById("myImg").src = message;
+
+        let image = document.createElement('img');
+
+        image.setAttribute('class','myImg');
+
+        image.setAttribute('src',message);
+
+        images.appendChild(image);
+
+        return 1;
+
+    }
+    else if(message.startsWith("accept")){
+
+        recent_message = author;
+    
+    }
+    else if(message.startsWith("Access Granted ")== true && author == mentor){
+        var now_id = dict[now_streaming];
+        var want_id = dict[author];
+        
+        if(now_id==undefined){
+            now_id = "local";
+        }
+        if(want_id == undefined){
+            want_id = "local";
+        }
+
+        console.log(now_id);
+        console.log(want_id);
+
+        if(now_id != want_id){
+            document.getElementById(now_id).setAttribute('class','participantHidden');
+            document.getElementById(want_id).setAttribute('class','participant');
+        }
+        now_streaming = author;
+    }
+
+    else if(message.startsWith("Access Allowed") == true && author == mentor){
+        
+        var now_id = dict[now_streaming];
+        var want_id = dict[recent_message];
+        
+        if(now_id==undefined){
+            now_id = "local";
+        }
+        if(want_id == undefined){
+            want_id = "local";
+        }
+
+        console.log(now_id);
+        console.log(want_id);
+
+        if(now_id != want_id){
+            document.getElementById(now_id).setAttribute('class','participantHidden');
+            document.getElementById(want_id).setAttribute('class','participant');
+        }
+        now_streaming = recent_message;
+
+    }
+    else if(message.startsWith("Mentor joined") == true){
+        var want_id = dict[author];
+        if(want_id == undefined){
+            want_id = "local";
+        }
+        document.getElementById(want_id).setAttribute('class','participant');
+
+        now_streaming = author;
+        mentor = author;
+    }
+    else if(message.startsWith("clear screen") == true && author == mentor){
+        images.innerHTML = "";
+    }
+
+    return 0;
+}
+
+function JoinedAs() {
+    document.getElementById("container").style.display = "block";
+    // document.getElementById("somebuttons").style.display = "inline-flex";
+    // document.getElementById("panel").style.display = "none";
+    // document.getElementById("panel").style.textAlign = "center";
+    // document.getElementById("somemorebtns").style.display = "block";
+    // document.getElementById("cameraop").style.display = "inline-flex";
+    document.getElementById("turn_over").style.display = "block";
+    document.getElementById("room").style.display = "none";
+    document.getElementById("name").style.display = "none";
+    document.getElementById("room_input").style.display = "none";
+    document.getElementById("name_input").style.display = "none";
+
+}
+
+function onStart() {
+    if (
+        !"mediaDevices" in navigator ||
+        !"getUserMedia" in navigator.mediaDevices
+    ) {
+        alert("Camera API is not available in your browser");
+        return;
+    }
+
+    // get page elements
+    const video = document.querySelector("#video");
+
+    // video constraints
+    const constraints = {
+        video: {
+            width: {
+                min: 1280,
+                ideal: 1920,
+                max: 2560,
+            },
+            height: {
+                min: 720,
+                ideal: 1080,
+                max: 1440,
+            },
+        },
+    };
+
+    // use front face camera
+    let useFrontCamera = true;
+
+    // current video stream
+    let videoStream;
+
+    // handle events
+    // play
+    ////////////////
+    // btnChangeCamera.addEventListener("click", function() {
+    //     useFrontCamera = !useFrontCamera;
+
+    //     initializeCamera();
+    // });
+
+    // stop video stream
+ 
+    // initialize
+    async function initializeCamera() {
+        if (videoStream) {
+            videoStream.getTracks().forEach((track) => {
+                track.stop();
+            });
+        }
+        constraints.video.facingMode = useFrontCamera ? "user" : "environment";
+
+        try {
+            videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+            video.srcObject = videoStream;
+        } catch (err) {}
+    }
+
+    initializeCamera();
+}
 
 
 function Student(){

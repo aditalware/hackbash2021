@@ -6,6 +6,7 @@ body {
     flex-direction: column;
 }
 
+
 .ggh {
     background: url('https://www.pngkit.com/png/full/20-204117_school-png-photos-green-school-board-png.png') no-repeat;
     background-size: 100%;
@@ -165,8 +166,11 @@ body {
 
 
 video {
+  z-index: 0;
+  position: absolute;
   width: 400px !important;
   height: 308px !important;
+  top: 412px;
 }
 
 .participant .label {
@@ -235,12 +239,16 @@ video {
 }
 
 .myImg {
+  z-index: 122;
   width: 300px;
   height: 308px;
   position: absolute;
   margin: auto;
-  opacity: 0.5;
-  left: 16%;
+  opacity: 26.5;
+  left: 40%;
+  top: 474px;
+  
+   
 }
 
 .join:hover {
@@ -301,8 +309,9 @@ button:hover {
 
 
 #imageDiv {
-  top: -112%;
-}
+  top: -60px;
+  left: 392px;
+  position: absolute;}
 
 #somebuttons {
       text-align: center;
@@ -311,7 +320,7 @@ button:hover {
       width: 100%;
       justify-content: center;
       position: absolute;
-      top: 80%;
+      top: 102%;
       right: 0%;
   }
 
@@ -358,13 +367,14 @@ button:hover {
 
 @media only screen and (max-width: 1000px) {
   #imageDiv {
-      width: 400px;
-      height: 308px;
-      margin: auto;
-      position: absolute;
-      opacity: 0.5;
-      left: 0%;
-      top: 0%;
+    width: 400px;
+    height: 308px;
+    margin: auto;
+    position: absolute;
+    opacity: 0.5;
+    left: -6%;
+    top: -10%;
+    z-index: 2;
   }
 
   /* #somebuttons {
@@ -414,14 +424,140 @@ button:hover {
       z-index: 2 !important;
   
   }
+
   .chatinput{
-    margin-bottom: 10px;
-    width: 300px;
-    border-radius: 20px;
-    border: 0px;
-    margin-top: 224px !important;
-    margin-left: -43px !important ;
+      margin-bottom: 10px;
+      width: 300px;
+      border-radius: 20px;
+      border: 0px;
+      margin-top: 224px !important;
+      margin-left: -43px !important ;
+  }
+
+  
 }
 
+.style1{
+    height: 20px;
+}
+.style2{
+    color: white;
+}
+.style3{
+    color: white; font-size: 20px;
+}
+.style4{
+    padding: 3px;
+}
+.style5{
+    margin-bottom: 30px; color:white;
+}
+.style6{
+   margin-right:20px;line-height: 12;
+}
+.style7{
+    display: inline-flex;
+}
+.style8{
+   line-height: 12;
+}
+.style9{
+    display: none;
+}
+.style10{
+    top: 72%;
+    right: 33%;
+}
+.maindiv{
+    width:440px;border:1px solid black;margin:auto;background-image: url(https://www.desktopbackground.org/download/540x960/2011/07/11/232812_plain-blue-backgrounds-wallpapers-wallpapers-cave_1920x1080_h.jpg); background-size: cover;border-radius: 35px;border:0px;height: 900px;
+}
 
+.titlefor{
+    height: 50px;width: 300px;background-color:rgb(202,233,246,0.4); border-radius: 20px;align-items: center;justify-content: center;text-align: center;margin:auto;margin-bottom: 20px;
+}
+
+.headingfor{
+    color:white;padding-top:4px; font-family:Great Vibes, cursive;font-size: 25px !important;
+}
+
+.formfor{
+    border:1px solid black;display: block;height: auto;width:420px;justify-content: center;text-align: center;border:0px;margin:auto
+}
+.namefield{
+    margin-bottom: 4px;text-align: center;width: 100%;justify-content: center;
+}
+
+.nameinput{
+    padding-left: 2px; margin:auto;margin-bottom: 10px;width:330px;border-radius: 20px;height: 35px;background-color: rgba(202,233,246,0.7);border: 0px; text-align: center;
+}
+
+.inputfield{
+    width:300px !important;border-radius: 20px !important;height: 35px !important;background-color: transparent !important;border: 0px !important; text-align: center !important;
+}
+.roomcode{
+    margin-bottom: 4px;text-align: center;width: 100%;justify-content: center;
+}
+.iconfor{
+    margin:auto;margin-bottom: 10px;width:330px;border-radius: 20px;height: 35px;background-color: rgba(202,233,246,0.7);border: 0px; text-align: center;
+}
+.inputfield2{
+    width:300px !important;border-radius: 20px !important;height: 35px !important;background-color: transparent !important;border: 0px !important; text-align: center !important;
+}
+.statusfield{
+    margin-left:auto;margin-right: auto;border: 1px solid black;width:200px;justify-content: center;text-align: center;background-color:rgb(255, 81, 0,0.5) ;border-radius: 30px;border:0px;height: 30px;margin-bottom:15px
+}
+.joinfield{
+    width:300px;
+    height:225px;
+     border:1px solid white;
+     margin:auto !important;
+     margin-top:120px !important;
+     justify-content:center !important;
+     text-align:center !important;
+     border-radius:20px !important;
+     margin-bottom:50px;
+     background: url('https://i.pinimg.com/originals/55/90/2f/55902f09ddd53c2d3783ad083eeca48b.jpg') no-repeat;
+     background-size: 100%;
+     width: 400px !important;
+     height: 300px !important;
+}
+.asfield{
+    margin:auto;align-items:center;color:white;margin-bottom:35px;margin-top:20px;font-size:25px;line-height: 2;
+}
+.btnsharescreen{
+    color:white;width:100px;height: 30px;background-color: rgb(202,233,246,0.4);border-radius: 20px;border:1px;line-height:1
+}
+.btntogglechat{
+    color:white;width:100px;height: 30px;background-color: rgb(202,233,246,0.4);border-radius: 20px;border:1px;line-height:1
+}
+.btnleave{
+    color:white;
+    width:100px;
+    height: 30px;
+    background-color: rgb(202,233,246,0.4);
+    border-radius: 20px;
+    border:1px;
+    line-height:1;
+}
+.cameradiv{
+    text-align:center; margin-top:15px;justify-content: center;text-align: center;width: 100%; width: 100%;display:inline-flex;
+}
+.containeradd{
+    border:1px solid black; 
+      height: 300px;width:400px;margin: 20px 21px;
+      background-color:rgb(202,231,246,0.5) ;
+       border-radius: 50px;border:0px;
+}
+.vids{
+    width: 400px; height:308px; 
+              margin:auto;
+}
+.rootlabel{
+    margin-left:25%; 
+              width:200px;
+              height:30px;
+              font-size:20px;
+              background-color:rgba(202,233,246,0.0) !important;
+              color:white;
+              
 }
