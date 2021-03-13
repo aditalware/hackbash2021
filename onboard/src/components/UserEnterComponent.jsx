@@ -116,7 +116,7 @@ async function capture1() {
     //         })
 
 
-    let url="https://fb5de64b845c.ngrok.io/process_image";
+    let url="https://jainil4801.pythonanywhere.com/process_image";
     let dataTosend=JSON.stringify({img:img1});
     PostRequestApi(url,dataTosend).then(data => {
         console.log(data);
@@ -198,7 +198,7 @@ async function connectButtonHandler(event) {
 };
 
 async function connect(username) {
-    let url="https://fb5de64b845c.ngrok.io/login";
+    let url="https://jainil4801.pythonanywhere.com/login";
    
     const usernameInput =await document.getElementById('username');
     const localDiv =await document.getElementById('local');
@@ -561,24 +561,7 @@ async function onChatInputKey(ev) {
 };
 
 
-// document.getElementById("Turn").onClick = function() {
-//     conv.sendMessage("accept " + usernameInput.value);
-// }
 
-// document.getElementById("Allow").onClick = function() {
-//     if(mentor == usernameInput.value){
-//         conv.sendMessage("Access Allowed to "+recent_message);
-//     }
-// }
-
-// document.getElementById("turn_over").onClick = function() {
-//     conv.sendMessage("Access Granted to "+mentor);
-// }
-
-// document.getElementById("cls").onClick = function() {
-//     conv.sendMessage("clear screen");
-//     images.innerHTML = "";
-// }
 
 async function parseURL(author, message) {
     const images = await document.getElementById('imageDiv');
@@ -662,20 +645,6 @@ async function parseURL(author, message) {
     return 0;
 }
 
-function JoinedAs() {
-    document.getElementById("container").style.display = "block";
-    // document.getElementById("somebuttons").style.display = "inline-flex";
-    // document.getElementById("panel").style.display = "none";
-    // document.getElementById("panel").style.textAlign = "center";
-    // document.getElementById("somemorebtns").style.display = "block";
-    // document.getElementById("cameraop").style.display = "inline-flex";
-    document.getElementById("turn_over").style.display = "block";
-    document.getElementById("room").style.display = "none";
-    document.getElementById("name").style.display = "none";
-    document.getElementById("room_input").style.display = "none";
-    document.getElementById("name_input").style.display = "none";
-
-}
 
 function onStart() {
     if (
@@ -711,18 +680,7 @@ function onStart() {
     // current video stream
     let videoStream;
 
-    // handle events
-    // play
-    ////////////////
-    // btnChangeCamera.addEventListener("click", function() {
-    //     useFrontCamera = !useFrontCamera;
-
-    //     initializeCamera();
-    // });
-
-    // stop video stream
- 
-    // initialize
+    
     async function initializeCamera() {
         if (videoStream) {
             videoStream.getTracks().forEach((track) => {
@@ -759,22 +717,42 @@ class UserEnterComponent extends Component {
         this.state={
             name:"",
             code:"",
-            
+            localDiv:null,
+            count:0,
+            student:false,
+            mentor:false
         }
         this.handleSubmit=this.handleSubmit.bind(this);
-      
+        this.setlocalPartipantDiv=this.setlocalPartipantDiv.bind(this);
+        this.setCount=this.setCount.bind(this);
     }
 
     async componentDidMount (){
        onStart();
-    
+   
+    }
+    setlocalPartipantDiv(name){
+        this.setState({localDiv:name})
     }
 
-    
- 
+    setCount(count){
+        this.setState({count:count})
+    }
+    setRole(role){
+        if(role=="student"){
+     this.setState({student:true});
+    assignStudent();
+    }
+        else{
+
+            this.setState({mentor:true});
+            assignMentor();
+        }
+
+
+    }
     handleSubmit(event){
      event.preventDefault();
-     connect({username:this.state.name,setlocalPartipantDiv:this.setlocalPartipantDiv,setCount:this.setCount});
     }
 
 
@@ -789,28 +767,185 @@ class UserEnterComponent extends Component {
                                             <div className="head titlefor">
                                                 <h1 className="headingfor">OnBoard</h1>
                                             </div>
-                                        <form className="formstyle formfor" onSubmit={this.handleSubmit}>
+
+                                            <form className="formstyle formfor" onSubmit={this.handleSubmit}>
                                                     <div id="name" className="namefield">
-                                                        <label for="username" className="style2">Enter Name</label>
+                                                        <label for="username" className="style2">{(!this.state.student && !this.state.mentor)?"Enter Name":("Welcome ")}{(!this.state.student && !this.state.mentor)?"": <i class="fas fa-smile-wink"></i>} </label>
                                                     </div>
-            {/* <!-- <video autoplay playsinline id="video"></video> --> */}
                                                     <div id="name_input" className="nameinput">
-                                                        <i className="fas fa-user" className="style3"></i> 
+                                                        <i className="fas fa-user style3"></i> 
 
                                                         <input type="text" autocomplete="off"  className="inputfield" name="username" id="username" onChange={(e)=>this.setState({name:e.target.value})}/>
 
 
                                                     </div>
+                                                    {(!this.state.student && !this.state.mentor)?
+                                                    <>
                                                         <div id="room" className="roomcode">
                                                             <label for="code" className="style2">Enter Room Code</label>
                                                         </div>
-                                                        </form>
-                                                   
+
+
+                                                    <div id="room_input" className="iconfor">
+                                                        <i className="fas fa-key style3"></i> 
+                                                        <input type="text" className="inputfield2" name="code" id="code" onChange={(e)=>this.setState({code:e.target.value})}/>
+                                                    </div>
+                                                    </>:<div></div>}
+
+
+                                                        <div className="statusfield">
+                                                            <p id="count" className="style2 style4">Disconnected</p>
+                                                        </div>
+
+                                                        
+                                                    {(!this.state.student && !this.state.mentor)?<div className="style5">
+                                                        <div id="panel" className="joinfield">
+                                                            <div className="asfield">
+                                                                Join As
+                                                            </div>
+                                                            <div className="style7">
+                                                                {/* <button type="submit" className="b1 style7"  onClick="JoinedAs()">Student</button> */}
+                                                                <button  className="b1 style7" id="join_leave_student" onClick={(e)=>{ this.setRole("student");assignStudent()}} >Student</button>
+                                                                <button  className="b2 style8" id="join_leave_mentor" onClick={(e)=>{this.setRole("mentor");assignMentor()}}>Mentor</button>
+                                                            </div>
+                                                        </div>
+                                                       
+                                                    </div>:<div></div>}
+            {/* <!-- <button id="toggle_chat" disabled>Toggle chat</button> --> */}
+                                    </form>
+
+
+        <div >
+                           
+
+        {(this.state.mentor || this.state.student) ?
+        <div className="btngr">
+            <button id="share_screen" className="btnsharescreen" >
+
+                <i className="fa fa-2x fa-desktop"> </i>
+
+                <span className="tooltiptext">Share Screen</span>
+            </button>
+            <button id="toggle_chat" className="btntogglechat" onClick={()=>{toggleChatHandler()}} >
+                
+                <i className="fa fa-2x fa-comment style3"> </i>
+
+                <span className="tooltiptext">Toggle Chat</span>
+            </button>
+            <a href="/"><button id="Leave_call" className="btnleave">
+                <i className="fa fa-2x fa-phone style3" > </i>
+
+                <span className="tooltiptext">Leave Call</span>
+            </button></a>
+        </div>:<div></div>}
+
+
+        {(this.state.mentor || this.state.student) ?
+          <div className="cameradiv">
+
+                    <select id="video-devices" className="optionCamera">
+                        <option value="0">
+                           Select Camera
+                        </option>
+                    </select>
+            </div>:<div></div>}
+
+            
+            {(this.state.mentor || this.state.student) ?  
+            <div id="root">
+                    <div id="container" className="containers containeradd">
+                                        <div id="local" className={this.state.localDiv==null?"participant":this.state.localDiv}>
+                                                    <div id="myVideo" className="vids
+                                                        ">
+                                                        <video autoPlay playsInline id="video"></video>
+                                                    </div>
+
+                                                                                               
+                                                        <div id="one" className="label rootlabel
+                                                    ">
+                                                        </div>
+                                        </div>
+                                        <div id="imageDiv">
+                                                {/* <!-- <img src="#" id="myImg" style="width: 400px; height: 308px; position: absolute; margin: auto; opacity: 0.5; left: 37%">
+                        --> */}
+                                        </div>
+                            {/* <!-- more participants will be added dynamically here --> */}
+                        </div>
+        <canvas disabled id="canvas" className="canvasstyle"></canvas>
+        <div id="somebuttons">
+                        <button className="btnaskdoubt" onClick={()=>{ conv.sendMessage("accept " + this.state.name);}} id="Turn">
+
+                            <i className="fa fa-2x fa-question-circle style3" > </i>
+
+                            <span className="tooltiptext">Ask Doubt</span>
+                        </button>
+                            <button className="btncapture" id="capture" onClick={()=>{capture1()}}>
+                            
+                                
+                                    <i className="fa fa-2x fa-camera"> </i>
+
+                                        <span className="tooltiptext">Capture Screenshot</span>
+
+                            </button>
+                        <button className="btnclearscreen" onClick={()=>{ conv.sendMessage("clear screen");}} id="cls">
+                            <i className="fa fa-2x fa-hand-rock"></i>
+                            <span className="tooltiptext">Clear Screen</span>
+                        </button>
+        </div>
+
+
+             <div id="chat" className="chatstyle">
+                        <div className="chatscrolls" id="chat-scroll" >
+                            <div id="chat-content">
+                                {/* <!-- chat content will be added dynamically here --> */}
+                            </div>
+                        </div>
+
+                        <div className="chatin">
+                            <input id="chat-input" placeholder="Type Your Query" className="chatinput" type="text" onKeyUp={(e)=>{onChatInputKey(e)}}/>
+                        </div>
+
+                    <div className="style7">
+
+                                <div>
+                                    <button id="Allow" onClick={()=>{  conv.sendMessage("Access Allowed to "+recent_message);}} className="allowbtn btnallow">
+                                        <i className="fa fa-2x fa-hand-pointer style3" > </i>
+                
+                                        <span className="tooltiptext">Allow</span>
+                                    </button>
+                                </div>
+                                <div className="btnturnover">
+                                    <button id="turn_over" onClick={()=>{conv.sendMessage("Access Granted to "+mentor);
+                                          }} className="turnoverbtn style10" >
+                                        <i className="fa fa-2x fa-retweet style3" ></i>
+                                        <span className="tooltiptext">Turn Over</span>
+                    
+                                    </button>
+                                </div>
+                    </div>
+            </div>
+
+</div>:<div></div>}
+
+
       </div>
+        
+       
+    </div>
+                <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+                <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+                <script src="https://media.twiliocdn.com/sdk/js/video/releases/2.3.0/twilio-video.min.js"></script>
+                <script src="https://media.twiliocdn.com/sdk/js/conversations/releases/1.0.0/twilio-conversations.min.js"></script>
     </div>
             
         )
-       
+        // else if(this.state.student){
+        //     return(<Student/>)
+        // }
+        // else{
+        //     return(<Mentor/>)
+        // }
     }
 }
 
