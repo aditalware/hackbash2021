@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
+import Video from 'twilio-video';
+import { Client as ConversationsClient } from "@twilio/conversations";
 import '../css/style.css';
 import Axios from 'axios';
-import Video from 'twilio-video';
+
+
+
 
 let connected = false;
 let room;
@@ -16,6 +20,7 @@ let dict = new Map();
 let now_streaming="";
 
 let mentor;
+let participant= new Map();
 
 let recent_message;
 
@@ -49,35 +54,118 @@ const getHeaders =() =>{
  
  }
 
-async function addLocalVideo() {
+// async function addLocalVideo() {
 
-    let trackElement = await document.getElementById('video');
+//     let trackElement = await document.getElementById('video');
 
-    Video.createLocalVideoTrack().then(track => {
- 
-        trackElement.addEventListener('click', () => { zoomTrack(trackElement); });
-     
-    });
+//     Video.createLocalVideoTrack().then(track => {
+//         const localMediaContainer = document.getElementById('video');
+//         localMediaContainer.appendChild(track.attach());
+//         // let video = document.getElementById('myVideo');
+//         // let trackElement = track.attach();
+//         // trackElement.addEventListener('click', () => { zoomTrack(trackElement); });
+//         // video.appendChild(trackElement);
+//         // console.log(trackElement);
+//         // trackElement.setAttribute("id", "video2");
+//         // console.log(video);
+//     });
+// };
+
+
+function capture1() {
+    var canvas = document.getElementById('canvas');
+    var video = document.getElementById('video');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);  
+    var img1 = canvas.toDataURL();
+    // $.ajax({
+    //             url: '/process1',
+    //             data: {
+    //                 imageBase64 : img1                    
+    //             },
+    //             type: 'POST',
+    //             success: function(data){
+    //                 // $("#result").text("Predicted Output : "+data);
+    //                 // canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight); 
+    //                 console.log("success!!")
+    //                 // console.log(data)
+    //                 conv.sendMessage(data);
+    //             } 
+    //         })
+
+    // conv.sendMessage("https://i.pinimg.com/originals/83/f9/37/83f937b69f30bb886ab8a03390da6771.jpg");
 };
-
 
 async function assignMentor(event){
     const usernameInput =await document.getElementById('username');
-    connectButtonHandler(event);
-    let mentor = usernameInput.value;
-    console.log(mentor);
-
+    mentor = usernameInput.value;
     now_streaming = mentor;
+    connectButtonHandler(event);
+    
+    // console.log(mentor);
+    // Disable Mentor Button
+    // document.getElementById('join_leave_mentor').style.display = "none";
+    // document.getElementById('Turn').style.display = "none";
+    
+}
+async function assignStudent(event){
+    const usernameInput =await document.getElementById('username');
+    console.log(usernameInput.value);
+    connectButtonHandler(event);
+    
+    // console.log(mentor);
+    // Disable Mentor Button
+    // document.getElementById('join_leave_mentor').style.display = "none";
+    // document.getElementById('Turn').style.display = "none";
     
 }
 
-function assignStudent(event){
 
-}
 
+
+async function connectButtonHandler(event) {
+    // event.preventDefault();
+    // const button = await document.getElementById('join_leave_student');
+    const lableInput =await document.getElementById('one');
+    const shareScreen = await document.getElementById('share_screen');
+    const usernameInput = await document.getElementById('username');
+
+    if (!connected) {
+        let username = usernameInput.value;
+        if (!username) {
+            alert('Enter your name before connecting');
+            return;
+        }
+        // button.disabled = true;
+        // button.innerHTML = 'Connecting...';
+        if(String(username)!=="undefined" && !participant[username]){
+            participant[username]=true;
+
+        connect(username).then(() => {
+            lableInput.innerHTML = username;
+            // button.innerHTML = 'Leave call';
+            // button.disabled = false;
+            shareScreen.disabled = false;
+            // capture.disabled = false;
+        }).catch(() => {
+            alert('Connection failed. Is the backend running?');
+            // button.innerHTML = 'Join call';
+            // button.disabled = false;
+        });}
+    }
+    else {
+        disconnect();
+        // button.innerHTML = 'Join call';
+        connected = false;
+        shareScreen.innerHTML = 'Share screen';
+        shareScreen.disabled = true;
+        // capture.disabled = true;
+    }
+};
 
 async function connect(username) {
-    let url="https://60c6eeef357e.ngrok.io/login";
+    let url="https://43407638a13d.ngrok.io/login";
    
     const usernameInput =await document.getElementById('username');
     const localDiv =await document.getElementById('local');
@@ -125,7 +213,11 @@ async function attachTracks(tracks) {
       container.appendChild(v);
       let d = document.getElementById("myVideo");
       console.log(d.childNodes);
-      d.removeChild(d.childNodes[1]);
+      try{
+        d.removeChild(d.childNodes[1]);
+      }catch(e){
+         console.log(e);
+      }
     }
   });
   // console.log("Hrll");
@@ -223,7 +315,13 @@ async function participantConnected(participant) {
 
     let participantDiv = document.createElement('div');
     participantDiv.setAttribute('id', participant.sid);
-    participantDiv.setAttribute('className',!String(participant.identity).localeCompare(now_streaming)?'participant':'participantHidden');
+    
+if(participant.identity == now_streaming){
+    participantDiv.setAttribute('class','participant');
+}
+else {
+    participantDiv.setAttribute('class','participantHidden');   
+}
     let tracksDiv = document.createElement('div');
     participantDiv.appendChild(tracksDiv);
 
@@ -249,6 +347,67 @@ async function participantConnected(participant) {
 function participantDisconnected(participant) {
     document.getElementById(participant.sid).remove();
     updateParticipantCount();
+};
+
+function trackSubscribed(div, track) {
+    let trackElement = track.attach();
+    trackElement.addEventListener('click', () => { zoomTrack(trackElement); });
+    div.appendChild(trackElement);
+};
+
+function trackUnsubscribed(track) {
+    track.detach().forEach(element => {
+        if (element.classList.contains('participantZoomed')) {
+            zoomTrack(element);
+        }
+        element.remove()
+    });
+};
+
+async function disconnect() {
+    const toggleChat =await document.getElementById('toggle_chat');
+    const root = await document.getElementById('root');
+    const container =await document.getElementById('container');
+
+    room.disconnect();
+    if (chat) {
+        chat.shutdown().then(() => {
+            conv = null;
+            chat = null;
+        });
+    }
+    while (container.lastChild.id != 'local')
+        container.removeChild(container.lastChild);
+    // button.innerHTML = 'Join call';
+    if (root.classList.contains('withChat')) {
+        root.classList.remove('withChat');
+    }
+    toggleChat.disabled = true;
+    connected = false;
+    updateParticipantCount();
+};
+
+async function shareScreenHandler() {
+    // event.preventDefault();
+    const shareScreen = await document.getElementById('share_screen');
+
+    if (!screenTrack) {
+        navigator.mediaDevices.getDisplayMedia().then(stream => {
+            screenTrack = new Video.LocalVideoTrack(stream.getTracks()[0]);
+            room.localParticipant.publishTrack(screenTrack);
+            screenTrack.mediaStreamTrack.onended = () => { shareScreenHandler() };
+            console.log(screenTrack);
+            shareScreen.innerHTML = 'Stop sharing';
+        }).catch(() => {
+            alert('Could not share the screen.')
+        });
+    }
+    else {
+        room.localParticipant.unpublishTrack(screenTrack);
+        screenTrack.stop();
+        screenTrack = null;
+        shareScreen.innerHTML = 'Share screen';
+    }
 };
 
 
