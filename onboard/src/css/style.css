@@ -167,9 +167,8 @@ body {
 
 video {
   z-index: 0;
-  position: absolute;
-  width: 400px !important;
-  height: 308px !important;
+  width: 414px !important;
+  height: 301px !important;
   top: 412px;
 }
 
@@ -214,7 +213,7 @@ video {
 #root.withChat #chat {
   width: auto;
   display: grid;
-  grid-template-rows: auto 30px;
+  grid-template-rows: auto 0px;
   border-left: 1px solid black;
   padding: 5px;
 }
@@ -240,13 +239,14 @@ video {
 
 .myImg {
   z-index: 122;
-  width: 300px;
-  height: 308px;
+  width: 349px;
+  height: 311px;
   position: absolute;
   margin: auto;
   opacity: 26.5;
-  left: 40%;
-  top: 474px;
+  left: 65%;
+  top: -55px;
+
   
    
 }
@@ -309,13 +309,18 @@ button:hover {
 
 
 #imageDiv {
-  top: -60px;
-  left: 392px;
-  position: absolute;}
+  top: 341px;
+  left: 320px;
+  z-index: 62;
+  position: absolute;
+  /* margin-bottom: 140px; */
+  /* background-color: navy; */
+  width: 395px;
+  height: 245px;}
 
 #somebuttons {
       text-align: center;
-      margin-top: 35px;
+      margin-top:4px;
       display: inline-flex;
       width: 100%;
       justify-content: center;
@@ -325,10 +330,8 @@ button:hover {
   }
 
   #turn_over {
-      display: none;
-      top: 72%;
-      right: 37%;
-      position: absolute;
+      display: initial;
+
   }
 
   .btnallow{
@@ -337,31 +340,21 @@ button:hover {
   width: 68px;
   border-radius: 78px;
   color: white;
-  margin-top: -28px;
+  margin-top: 0px;
   line-height: 1;
   z-index: 989;
   margin-left: 120px;    }
 
-  .btnallow{
-      background-color: rgba(37, 189, 52, 0.8);
-  height: 64px;
-  width: 68px;
-  border-radius: 78px;
-  color: white;
-  margin-top: -28px;
-  line-height: 1;
-  z-index: 989;
-  margin-left: 120px;    }
   .btnturnover{
       text-align:center; justify-content: center;width: 100%;display: inline-flex;
   }
   .turnoverbtn {
-  margin-top: 10px;
-  line-height: 2;
-  height: 64px;
-  width: 68px;
-  border-radius: 78px;
-  background-color: rgba(245, 121, 6, 0.9) !important;
+    margin-top: 2px;
+    line-height: 2;
+    height: 64px;
+    width: 68px;
+    border-radius: 78px;
+    background-color: rgba(245, 121, 6, 0.9) !important;
   
   }
 
@@ -372,38 +365,29 @@ button:hover {
     margin: auto;
     position: absolute;
     opacity: 0.5;
-    left: -6%;
-    top: -10%;
+    left: 16%;
+    top: -26%;
     z-index: 2;
   }
 
-  /* #somebuttons {
-      text-align: center;
-      margin-top: 35px;
-      display: none;
-      width: 100%;
-      justify-content: center;
-      position: absolute;
-      top: 94% !important;
-      right: -12% !important;
-  } */
+
 
   #turn_over {
-      display: none;
-      top: 394% !important;
-      right: 70% !important;
-      position: absolute;
+      display: initial
+      ;
+
   }
   .btnallow{
-      background-color: rgba(37, 189, 52, 0.8);
-  height: 64px;
-  width: 68px;
-  border-radius: 78px;
-  color: white;
-  margin-top: 229px;
-  line-height: 1;
-  z-index: 989;
-  margin-left: 120px;    }
+    ackground-color: rgba(37, 189, 52, 0.8);
+    height: 64px;
+    width: 68px;
+    border-radius: 78px;
+    color: white;
+    margin-top: 3px;
+    line-height: 1;
+    z-index: 10;
+    margin-left: 14px;
+   }
  
 }
 
@@ -455,8 +439,17 @@ button:hover {
 .style6{
    margin-right:20px;line-height: 12;
 }
+
+.style11{
+  height: 64px;
+  display: inline-flex;
+  z-index: 40;
+  margin-top: 29px;
+  width: 247px;
+}
 .style7{
-    display: inline-flex;
+
+  display: inline-flex;
 }
 .style8{
    line-height: 12;
@@ -560,4 +553,206 @@ button:hover {
               background-color:rgba(202,233,246,0.0) !important;
               color:white;
               
+}
+.btngr{
+  
+width: 100%;
+margin: auto;
+text-align: center;
+margin-top: 14px;
+}
+.btnaskdoubt{
+    margin:10px;
+    background-color: rgba(22, 150, 35, 0.5);height: 68px;border-radius:114px ;color:white;margin-top: 20px;
+    width: 71px;
+          line-height:1;
+          
+
+}
+.canvasstyle{
+    position: absolute;left: auto; height: 0px
+}
+.btncapture{
+    margin:10px;
+    background-color: rgba(235, 13, 13, 0.8);height: 68px;border-radius:114px ;color:white;margin-top: 20px;
+    width: 71px;
+          line-height:1
+}
+.btnclearscreen{
+    background-color: rgba(22, 150, 35, 0.5);height: 68px;border-radius:114px ;color:white;margin-top: 20px;
+    width: 71px;
+          line-height:1
+}
+.chatstyle{
+    transition: 2s ease-in-out;
+    border:0px !important;
+    height: auto !important;
+    border-radius: 40px;
+    position: absolute;
+    left: 37% !important;
+     top: 85% !important;
+     width: auto !important;
+     z-index: 2 !important;
+}
+
+.chatin{
+    margin:auto;text-align: center;height: 22px;border:0px;z-index: 3;
+}
+.chatinput{
+    margin-bottom: 10px;width:300px;border-radius: 20px;border:0px ;margin-top:-41px;
+}
+
+
+
+.btncapture .tooltiptext {
+visibility: hidden;
+width: 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 3px 0;
+border:0px;
+
+/* Position the tooltip */
+position: absolute;
+z-index: 1;
+}
+
+.btncapture:hover .tooltiptext {
+visibility: visible;
+}
+
+
+.btnclearscreen .tooltiptext {
+visibility: hidden;
+width: 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 3px 0;
+border:0px;
+
+/* Position the tooltip */
+position: absolute;
+z-index: 1;
+}
+
+.btnclearscreen:hover .tooltiptext {
+visibility: visible;
+}
+
+.btnturnover .tooltiptext {
+visibility: hidden;
+width: 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 3px 0;
+border:0px;
+
+/* Position the tooltip */
+position: absolute;
+z-index: 1;
+}
+
+.btnturnover:hover .tooltiptext {
+/* visibility: visible; */
+}
+.btnaskdoubt .tooltiptext {
+visibility: hidden;
+width: 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 3px 0;
+border:0px;
+
+/* Position the tooltip */
+position: absolute;
+z-index: 1;
+}
+
+.btnaskdoubt:hover .tooltiptext {
+visibility: visible;
+}
+.btnsharescreen .tooltiptext {
+  visibility: hidden;
+width: 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 3px 0;
+border:0px;
+
+/* Position the tooltip */
+position: absolute;
+z-index: 1;
+}
+
+.btnsharescreen:hover .tooltiptext {
+visibility: visible;
+}
+.btntogglechat .tooltiptext {
+visibility: hidden;
+width: 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 3px 0;
+border:0px;
+
+/* Position the tooltip */
+position: absolute;
+z-index: 1;
+}
+
+#video{
+border-radius: 24px;
+}
+
+.btntogglechat:hover .tooltiptext {
+visibility: visible;
+}
+.btnleave .tooltiptext {
+visibility: hidden;
+width: 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 3px 0;
+border:0px;
+
+/* Position the tooltip */
+position: absolute;
+z-index: 1;
+}
+
+.btnleave:hover .tooltiptext {
+visibility: visible;
+}
+
+.btnallow .tooltiptext {
+visibility: hidden;
+width: 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 3px 0;
+border:0px;
+
+/* Position the tooltip */
+position: absolute;
+z-index: 1;
+}
+
+.btnallow:hover .tooltiptext {
+visibility: visible;
 }

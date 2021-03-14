@@ -116,7 +116,7 @@ async function capture1() {
     //         })
 
 
-    let url="https://jainil4801.pythonanywhere.com/process_image";
+    let url="https://7f952336981f.ngrok.io/process_image";
     let dataTosend=JSON.stringify({img:img1});
     PostRequestApi(url,dataTosend).then(data => {
         console.log(data);
@@ -198,7 +198,7 @@ async function connectButtonHandler(event) {
 };
 
 async function connect(username) {
-    let url="https://jainil4801.pythonanywhere.com/login";
+    let url="https://7f952336981f.ngrok.io/login";
    
     const usernameInput =await document.getElementById('username');
     const localDiv =await document.getElementById('local');
@@ -905,7 +905,7 @@ class UserEnterComponent extends Component {
                             <input id="chat-input" placeholder="Type Your Query" className="chatinput" type="text" onKeyUp={(e)=>{onChatInputKey(e)}}/>
                         </div>
 
-                    <div className="style7">
+                    <div className="style11">
 
                                 <div>
                                     <button id="Allow" onClick={()=>{  conv.sendMessage("Access Allowed to "+recent_message);}} className="allowbtn btnallow">
