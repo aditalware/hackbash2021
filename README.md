@@ -29,15 +29,11 @@ cd INSTALLATION_PATH
 4.  Clone this repository `git clone https://github.com/aditalware/hackbash2021.git`
 or u can download and extact the zip file.
 
-5. Move to the project directory
-```sh
-cd team#20-5
-```
-6. Copy paste the API Keys from your twillio account after making a copy of .env.template
+5. Copy paste the API Keys from your twillio account after making a copy of .env.template
 ```sh
 cp .env.template .env
 ```
-7. Create a virtual environment
+6. Create a virtual environment
 ```sh
 pip install virtualenv
 virtualenv venv
@@ -51,16 +47,16 @@ source venv/Scripts/activate
 ```sh
 venv\Scripts\activate 
 ```
-8. Installing requirements
+7. Installing requirements
 ```sh
 pip install -r requirement.txt
 ```
 
-9. Starting the backend server
+8. Starting the backend server
 ```sh
 python app.py 
 ```
-10. Making a public server using ngrok
+9. Making a public server using ngrok
 - Open another terminal for creating public server
 - Move to the project directory 
 - Create virtual environment as above
